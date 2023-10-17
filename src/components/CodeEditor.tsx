@@ -3,11 +3,18 @@ import Editor, { loader } from '@monaco-editor/react';
 import * as monaco from 'monaco-editor';
 import { useState } from 'react';
 import { BrowserMessageReader, BrowserMessageWriter } from 'vscode-languageserver-protocol/browser';
-import { CloseAction, ErrorAction, MonacoLanguageClient } from 'monaco-languageclient';
+import { MonacoLanguageClient, initServices } from 'monaco-languageclient';
 
-import type { MessageTransports } from 'monaco-languageclient';
+import { CloseAction, ErrorAction } from 'vscode-languageclient';
+
+import type { MessageTransports } from 'vscode-languageclient';
 
 loader.config({ monaco });
+await initServices({});
+
+monaco.languages.register({
+  id: 'yaml',
+});
 
 const worker = new Worker(
   new URL('../worker.ts', import.meta.url),
